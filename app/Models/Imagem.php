@@ -10,4 +10,5 @@ class Imagem extends Model
 	public $timestamps = false;
 
 	protected $fillable = [ 'data' ];
+	protected $hidden = [ 'data' ];
 }

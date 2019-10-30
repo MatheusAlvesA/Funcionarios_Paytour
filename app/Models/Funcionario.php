@@ -10,7 +10,7 @@ class Funcionario extends Model
 	public $timestamps = false;
 
 	protected $fillable = [
-        'nome', 'email', 'cpf', 'telefone', 'observacoes' 
+        'nome', 'email', 'cpf', 'imagem_id', 'telefone', 'observacoes' 
 	];
 
 	protected $hidden = ['imagem_id'];
