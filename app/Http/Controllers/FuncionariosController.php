@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Models\Funcionario;
-use App\Models\Imagem;
 
 class FuncionariosController extends Controller {
 	
@@ -26,13 +25,17 @@ class FuncionariosController extends Controller {
 			return response($validacao, 400);
 
 		try {
-			$imagem = Imagem::create(['data' => base64_decode($r->input('imagem'))]);
+			$imagem = base64_decode($r->input('imagem'));
+			$code = str_random(20);
+			$path = public_path('imagens');
+			file_put_contents($path.DIRECTORY_SEPARATOR.$code.'.jpg', $imagem);
+
 			Funcionario::create(
 				[
 					'nome' => $r->input('nome'),
 					'email' => $r->input('email'),
 					'cpf' => $r->input('cpf'),
-					'imagem_id' => $imagem->id,
+					'foto' => $code.'.jpg',
 					'telefone' => $r->input('telefone'),
 					'observacoes' => $r->input('observacoes') 
 				]
@@ -81,13 +84,13 @@ class FuncionariosController extends Controller {
 
 			try {
 				$funcionario = Funcionario::findOrFail($id);
-				$imagem = Imagem::findOrFail($funcionario->imagem_id);
 
-				$novaImagem = $r->input('imagem');
-				if($imagem !== null) {
-					$imagem->update([
-						'data' => base64_decode($novaImagem)
-					]);
+				if($r->input('imagem') != null) {
+					$imagem = base64_decode($r->input('imagem'));
+					$code = $funcionario->foto;
+					$path = public_path('imagens');
+					unlink($path.DIRECTORY_SEPARATOR.$code);
+					file_put_contents($path.DIRECTORY_SEPARATOR.$code, $imagem);
 				}
 
 				$funcionario->update($r->all());
@@ -113,38 +116,15 @@ class FuncionariosController extends Controller {
 	public function removerFuncionario(int $id) {
 		try {
 			$funcionario = Funcionario::findOrFail($id);
-			$imagem = Imagem::findOrFail($funcionario->imagem_id);
+			$code = $funcionario->foto;
+			$path = public_path('imagens');
+			unlink($path.DIRECTORY_SEPARATOR.$code);
 			$funcionario->delete();
-			$imagem->delete();
 			
 			return response([
 				'erro' => false,
 				'mensagem' => 'Funcionário removido com sucesso'
 			], 200);
-		} catch(ModelNotFoundException $e) {
-			return response([
-				'erro' => true,
-				'mensagem' => "Não foi possível encontrar Funcionário com id $id"
-			], 404);
-		}
-		catch(\Exception $e) {
-			return response([
-				'erro' => true,
-				'mensagem' => $e->getMessage()
-			], 500);
-		}
-	}
-
-	public function exibirImagemFuncionario($id) {
-		try {
-			$funcionario = Funcionario::findOrFail($id);
-			$imagem = Imagem::findOrFail($funcionario->imagem_id);
-			return response(
-							$imagem->data,
-							200,
-							['Content-Type' => 'image/jpeg']
-						);
-
 		} catch(ModelNotFoundException $e) {
 			return response([
 				'erro' => true,
