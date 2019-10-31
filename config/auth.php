@@ -14,7 +14,7 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'web',
+        'guard' => 'api',
         'passwords' => 'users',
     ],
 
@@ -42,9 +42,8 @@ return [
         ],
 
         'api' => [
-            'driver' => 'token',
-            'provider' => 'users',
-            'hash' => false,
+            'driver' => 'jwt',
+            'provider' => 'users'
         ],
     ],
 
@@ -90,7 +89,7 @@ return [
     | considered valid. This security feature keeps tokens short-lived so
     | they have less time to be guessed. You may change this as needed.
     |
-    */
+    
 
     'passwords' => [
         'users' => [
@@ -99,5 +98,5 @@ return [
             'expire' => 60,
         ],
     ],
-
+	*/
 ];
