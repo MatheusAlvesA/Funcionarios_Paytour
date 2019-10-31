@@ -20,7 +20,14 @@ class JwtAuthController extends Controller {
     }
 
     public function logout() {
-        auth()->logout();
+		try {
+			auth()->logout();
+		} catch(\Exception $e) {
+			return response([
+				'erro' => true,
+				'mensagem' => "Token inválido"
+			], 401);
+		}
         return response()->json([
 			'erro' => false,
 			'mensagem' => 'Deslogado com sucesso'
