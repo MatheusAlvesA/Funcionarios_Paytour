@@ -35,7 +35,15 @@ class JwtAuthController extends Controller {
     }
 
     public function refresh() {
-        return $this->respondWithToken(auth()->refresh());
+    	try {
+        	return $this->respondWithToken(auth()->refresh());
+    	}
+         catch(\Exception $e) {
+			return response([
+				'erro' => true,
+				'mensagem' => "Token inválido"
+			], 401);
+		}
     }
 
     protected function respondWithToken($token) {

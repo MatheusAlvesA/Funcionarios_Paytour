@@ -11,5 +11,5 @@ Route::group(['middleware' => ['jwt.verify']], function() {
 
 // Rotas de login
 Route::post('/login', 'JwtAuthController@login');
-Route::post('/logout', 'JwtAuthController@logout');
-Route::post('/refresh', 'JwtAuthController@refresh');
+Route::get('/logout', 'JwtAuthController@logout');
+Route::get('/refresh', 'JwtAuthController@refresh');
