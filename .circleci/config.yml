@@ -43,8 +43,28 @@ jobs:
             php artisan migrate --force
       - run: ./vendor/bin/phpunit
 
+  deploy:
+    docker:
+      - image: circleci/php:7.2-browsers
+    working_directory: ~/laravel
+    steps:
+      - checkout
+      - run:
+          name: Preparando ambiente
+          command: |
+            sudo apt install -y sshpass
+      - run:
+          name: Deploy
+          command: |
+            export SSHPASS=$USER_PASSWORD
+            sshpass -e ssh -o stricthostkeychecking=no matheus@149.28.225.22 'cd /var/www/html && sudo rm -rf *'
+            sshpass -e scp -o stricthostkeychecking=no -r * matheus@149.28.225.22:/var/www/html
+
 workflows:
   version: 2
   notify_deploy:
     jobs:
       - build
+      - deploy
+        requires:
+          - build
