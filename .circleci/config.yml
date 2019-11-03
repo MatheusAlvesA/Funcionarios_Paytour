@@ -65,6 +65,6 @@ workflows:
   notify_deploy:
     jobs:
       - build
-      - deploy
+      - deploy:
         requires:
           - build
