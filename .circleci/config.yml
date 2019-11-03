@@ -54,11 +54,16 @@ jobs:
           command: |
             sudo apt install -y sshpass
       - run:
+          name: Instalando Deployer
+          command: |
+            curl -LO https://deployer.org/deployer.phar
+            sudo mv deployer.phar /usr/local/bin/dep
+            sudo chmod +x /usr/local/bin/dep
+      - run:
           name: Deploy
           command: |
             export SSHPASS=$USER_PASSWORD
-            sshpass -e ssh -o stricthostkeychecking=no -t matheus@149.28.225.22 'cd /var/www/html && sudo rm -rf *'
-            sshpass -e scp -o stricthostkeychecking=no -r * matheus@149.28.225.22:/var/www/html
+            sshpass -e dep deploy
 
 workflows:
   version: 2
