@@ -63,10 +63,7 @@ jobs:
           name: Deploy
           command: |
             export SSHPASS=$USER_PASSWORD
-            sshpass -e ssh -o stricthostkeychecking=no -t matheus@149.28.225.22 'cd /var/www/html/ && sudo rm -rf current'
-            sshpass -e ssh -o stricthostkeychecking=no -t matheus@149.28.225.22 'cd /var/www/html/ && sudo git clone https://github.com/MatheusAlvesA/Funcionarios_Paytour.git'
-            sshpass -e ssh -o stricthostkeychecking=no -t matheus@149.28.225.22 'cd /var/www/html/ && sudo mv Funcionarios_Paytour current'
-            sshpass -e ssh -o stricthostkeychecking=no -t matheus@149.28.225.22 'cd /var/www/html/ && sudo chmod 777 -R current'
+            sshpass -e ssh -o stricthostkeychecking=no -t matheus@149.28.225.22 'cd /var/www/html/ && sudo rm -rf current && sudo git clone https://github.com/MatheusAlvesA/Funcionarios_Paytour.git && sudo mv Funcionarios_Paytour current && sudo chmod 777 -R current && cd current && composer install'
 
 workflows:
   version: 2
