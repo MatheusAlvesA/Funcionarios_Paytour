@@ -87,10 +87,13 @@ class FuncionariosController extends Controller {
 
 				if($r->input('imagem') != null) {
 					$imagem = base64_decode($r->input('imagem'));
-					$code = $funcionario->foto;
+					$old = $funcionario->foto;
+					$code = str_random(20).'.jpg';
 					$path = public_path('imagens');
-					unlink($path.DIRECTORY_SEPARATOR.$code);
+					
 					file_put_contents($path.DIRECTORY_SEPARATOR.$code, $imagem);
+					unlink($path.DIRECTORY_SEPARATOR.$old);
+					$funcionario->update(['foto' => $code]);
 				}
 
 				$funcionario->update($r->all());
