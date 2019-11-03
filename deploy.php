@@ -29,6 +29,7 @@ host('149.28.225.22')
 
 task('build', function () {
     run('cd {{release_path}} && composer install');
+    run('cd {{release_path}} && php artisan mysql:criarBanco');
 });
 
 // [Optional] if deploy fails automatically unlock.
