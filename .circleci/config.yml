@@ -57,7 +57,7 @@ jobs:
           name: Deploy
           command: |
             export SSHPASS=$USER_PASSWORD
-            sshpass -e ssh -o stricthostkeychecking=no matheus@149.28.225.22 'cd /var/www/html && sudo rm -rf *'
+            sshpass -e ssh -o stricthostkeychecking=no -t matheus@149.28.225.22 'cd /var/www/html && sudo rm -rf *'
             sshpass -e scp -o stricthostkeychecking=no -r * matheus@149.28.225.22:/var/www/html
 
 workflows:
