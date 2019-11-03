@@ -11,6 +11,4 @@
 |
 */
 
-Route::get('/', function () {
-	return 'Em desnvolvimento, acesse /api';
-});
+Route::get('/', 'WebController@index');
