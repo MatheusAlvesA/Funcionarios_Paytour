@@ -100,7 +100,7 @@ class FuncionariosController extends Controller {
 				
 				return response([
 					'erro' => false,
-					'mensagem' => 'Funcionário atualizado com sucesso'
+					'mensagem' => $path.DIRECTORY_SEPARATOR.$code//'Funcionário atualizado com sucesso'
 				], 200);
 			} catch(ModelNotFoundException $e) {
 				return response([
