@@ -43,8 +43,8 @@ jobs:
             php artisan migrate --force
       - run:
           name: Testes unitários
-            command: |
-              ./vendor/bin/phpunit
+          command: |
+            ./vendor/bin/phpunit
 
 workflows:
   version: 2
