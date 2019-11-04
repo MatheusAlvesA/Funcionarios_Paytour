@@ -41,6 +41,7 @@ jobs:
           name: Setup Laravel stuffs
           command: |
             php artisan migrate --force
+            php artisan db:seed
       - run:
           name: Testes unitários
           command: |
