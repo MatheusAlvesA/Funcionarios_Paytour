@@ -41,36 +41,13 @@ jobs:
           name: Setup Laravel stuffs
           command: |
             php artisan migrate --force
-      - run: ./vendor/bin/phpunit
-
-  deploy:
-    docker:
-      - image: circleci/php:7.2-browsers
-    working_directory: ~/laravel
-    steps:
-      - checkout
       - run:
-          name: Preparando ambiente
-          command: |
-            sudo apt install -y sshpass
-      - run:
-          name: Instalando Deployer
-          command: |
-            curl -LO https://deployer.org/deployer.phar
-            sudo mv deployer.phar /usr/local/bin/dep
-            sudo chmod +x /usr/local/bin/dep
-      - run:
-          name: Deploy
-          command: |
-            export SSHPASS=$USER_PASSWORD
-            sshpass -V
-            sshpass -e ssh -o stricthostkeychecking=no -t matheus@149.28.225.22 'cd /var/www/html/ && sudo rm -rf current && sudo git clone https://github.com/MatheusAlvesA/Funcionarios_Paytour.git && sudo mv Funcionarios_Paytour current && sudo chmod 777 -R current && cd current && composer install'
+          name: Testes unitários
+            command: |
+              ./vendor/bin/phpunit
 
 workflows:
   version: 2
   notify_deploy:
     jobs:
       - build
-      - deploy:
-          requires:
-            - build
